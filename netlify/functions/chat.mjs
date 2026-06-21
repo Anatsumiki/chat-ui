@@ -5,7 +5,7 @@ export default async function handler(req) {
   }
 
   try {
-    const { messages, model, endpoint } = await req.json();
+    const { messages, model, endpoint, maxTokens, temperature } = await req.json();
     const apiKey = process.env.API_KEY;
 
     const upstream = await fetch(endpoint, {
@@ -14,7 +14,7 @@ export default async function handler(req) {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${apiKey}`,
       },
-      body: JSON.stringify({ model, messages, stream: true }),
+      body: JSON.stringify({ model, messages, max_tokens: maxTokens, temperature, stream: true }),
     });
 
     if (!upstream.ok) {
