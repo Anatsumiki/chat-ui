@@ -19,6 +19,7 @@ export default async function handler(req) {
     }
 
     const upstream = await fetch(endpoint, {
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${key}`,
