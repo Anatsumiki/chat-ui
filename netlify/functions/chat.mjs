@@ -5,21 +5,38 @@ export default async function handler(req) {
   }
 
   try {
-    const { messages, model, endpoint, maxTokens, temperature } = await req.json();
-    const apiKey = process.env.API_KEY;
+    const { messages, model, endpoint, maxTokens, temperature, apiKey } =
+      await req.json();
+    const key = apiKey || process.env.API_KEY;
+
+    if (!key) {
+      return new Response(
+        JSON.stringify({
+          error: '请配置 API Key，或在浏览器弹窗中填写你自己的 Key',
+        }),
+        { status: 400, headers: { 'Content-Type': 'application/json' } },
+      );
+    }
 
     const upstream = await fetch(endpoint, {
-      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`,
+        Authorization: `Bearer ${key}`,
       },
-      body: JSON.stringify({ model, messages, max_tokens: maxTokens, temperature, stream: true }),
+      body: JSON.stringify({
+        model,
+        messages,
+        max_tokens: maxTokens,
+        temperature,
+        stream: true,
+      }),
     });
 
     if (!upstream.ok) {
       const err = await upstream.text();
-      return new Response(`Upstream error: ${err}`, { status: upstream.status });
+      return new Response(`Upstream error: ${err}`, {
+        status: upstream.status,
+      });
     }
 
     const { readable, writable } = new TransformStream();

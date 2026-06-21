@@ -12,6 +12,7 @@
   // ── State ──────────────────────────────────────────────────────
   var config = {
     endpoint: '',
+    apiKey: '',
     model: '',
     systemPrompt: '你是一个有帮助的 AI 助手。',
     maxTokens: 2048,
@@ -357,7 +358,7 @@
     if (isStreaming || !text.trim()) return;
 
     /* validate config */
-    if (!config.endpoint || !config.model) {
+    if (!config.endpoint || !config.model || !config.apiKey) {
       toast('请先在 API 配置中填写端点、密钥和模型名称', 'error');
       apiModal.classList.add('open');
       return;
@@ -430,6 +431,7 @@
           messages: payloadMessages,
           model: config.model,
           endpoint: config.endpoint, // 端点传给服务端
+          apiKey: config.apiKey,
           maxTokens: config.maxTokens,
           temperature: config.temperature,
           systemPrompt: config.systemPrompt,
