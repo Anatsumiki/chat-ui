@@ -51,6 +51,7 @@
   var apiModalSave = $('apiModalSave');
   var toastContainer = $('toastContainer');
   var apiEndpointInput = $('apiEndpoint');
+  var apiKeyInput = $('apiKey');
   var modelSelectInput = $('modelSelect');
   var systemPromptInput = $('systemPrompt');
   var maxTokensInput = $('maxTokens');
@@ -603,6 +604,7 @@
 
   function openApiModal() {
     apiEndpointInput.value = config.endpoint || '';
+    apiKeyInput.value = config.apiKey || '';
     modelSelectInput.value = config.model || '';
     systemPromptInput.value = config.systemPrompt || '';
     maxTokensInput.value = config.maxTokens || 2048;
@@ -624,6 +626,7 @@
 
   apiModalSave.addEventListener('click', function () {
     config.endpoint = apiEndpointInput.value.trim();
+    config.apiKey = apiKeyInput.value.trim();
     config.model = modelSelectInput.value.trim();
     config.systemPrompt =
       systemPromptInput.value.trim() || '你是一个有帮助的 AI 助手。';
